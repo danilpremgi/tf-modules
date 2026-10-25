@@ -1,5 +1,5 @@
 module "constants" {
-  source = "./constants"
+  source = "../constants"
 }
 
 resource "azurerm_resource_group" "rg" {
