@@ -277,6 +277,7 @@ module "web_nsg" {
 
 - **`source`** says where the module code lives. A local path (`./...`) is read straight from disk. Git sources (`git::https://github.com/you/repo.git//modules/x?ref=v1.0.0`) and registry sources (`Azure/avm-res-.../azurerm`) are downloaded during `terraform init`.
 - **Chaining outputs to inputs** (`module.vm_rg.rg_name`) is how modules compose, and it also builds the dependency graph between modules.
+- **Shared tags are applied here, in the root.** The child modules don't call `constants` themselves, so each one stays standalone and can be copied or published on its own. Pass `module.constants.tags` to every module, merging in your own with `merge(module.constants.tags, { role = "web" })`. azurerm has no provider-level `default_tags`, so this is the one place that keeps `ManagedWith` consistent.
 - Notice how little you had to type for that rule. That's what the `optional()` defaults buy you.
 
 > ⚠️ **`?ref=` only works with git sources.** A local path like `"./modules/virtual_machine?ref=modules/vm/v1.0.0"` makes Terraform look for a folder literally named `virtual_machine?ref=modules/vm/v1.0.0`, so `init` fails. Use `"./modules/virtual_machine"`, or a full `git::https://github.com/...//modules/virtual_machine?ref=modules/vm/v1.0.0` URL if you want version pinning.

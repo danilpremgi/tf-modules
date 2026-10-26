@@ -1,4 +1,5 @@
 output "region_codes" {
+  description = "Short code for each Azure region, keyed by region name (e.g. uksouth => uks). Used in resource names."
   value = {
     # United Kingdom
     "ukwest"  = "ukw"
