@@ -118,9 +118,13 @@ Delegated subnets are left to the service, so the setting isn't applied to them.
 | Name | Description |
 |---|---|
 | `id`, `name`, `address_space` | |
-| `subnets` | Map of `{ id, name, address_prefixes }` keyed by subnet key |
+| `subnets` | Map keyed by subnet key of `{ id, name, resource_group_name, virtual_network_name, address_prefix, address_prefixes, network_security_group_id, route_table_id, nat_gateway_id }`. The association IDs are `null` when not set |
 | `subnet_ids` | Map of subnet key => ID |
-| `subnet_prefixes` | Map of subnet key => first address prefix, for NSG rules and routes |
+| `subnet_prefixes` | Map of subnet key => first address prefix, for NSG rules and routes. Use `subnets[key].address_prefixes` for subnets with several prefixes |
+
+`subnets` and `subnet_ids` are only available after the NSG, route table and NAT gateway
+associations are applied, so resources that use them (NICs, private endpoints) don't race the
+associations for the subnet or start on an unsecured subnet.
 
 ## Gotchas
 
